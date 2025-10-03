@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora ROI Naturepellets</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c5530;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-section, .results-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .input-section h2, .results-section h2 {
+            color: #2c5530;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #4a7c59;
+        }
+
+        .form-group small {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .client-type {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .client-option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .client-option:hover {
+            border-color: #4a7c59;
+            background-color: #f0f8f0;
+        }
+
+        .client-option.selected {
+            border-color: #2c5530;
+            background-color: #e8f5e8;
+        }
+
+        .client-option h4 {
+            color: #2c5530;
+            margin-bottom: 5px;
+        }
+
+        .client-option p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .result-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
+            border-radius: 10px;
+            border-left: 4px solid #4a7c59;
+        }
+
+        .result-item .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c5530;
+            margin-bottom: 5px;
+        }
+
+        .result-item .label {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background-color: #2c5530;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .highlight {
+            background-color: #e8f5e8 !important;
+            font-weight: bold;
+        }
+
+        .cta-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .client-type {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 CALCULADORA ROI NATUREPELLETS</h1>
+            <p>Descubre cuánto puedes ahorrar cambiando a pellets de biomasa</p>
+        </div>
+
+        <div class="calculator-container">
+            <div class="input-section">
+                <h2>📊 Datos de tu Instalación Actual</h2>
+
+                <div class="form-group">
+                    <label for="combustible">Combustible Actual:</label>
+                    <select id="combustible" onchange="calcularROI()">
+                        <option value="">Selecciona tu combustible actual</option>
+                        <option value="gasoleo">Gasóleo C</option>
+                        <option value="gas">Gas Natural</option>
+                        <option value="propano">Propano</option>
+                        <option value="electricidad">Electricidad</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="coste-anual">Coste Energético Anual (€):</label>
+                    <input type="number" id="coste-anual" placeholder="Ej: 8500" onchange="calcularROI()">
+                    <small>Introduce el coste total de calefacción del año pasado</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="superficie">Superficie a Calentar (m²):</label>
+                    <input type="number" id="superficie" placeholder="Ej: 500" onchange="calcularROI()">
+                    <small>Metros cuadrados totales con calefacción</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de Instalación:</label>
+                    <div class="client-type">
+                        <div class="client-option" onclick="selectClientType('hotel')">
+                            <h4>🏨 Hotel Rural</h4>
+                            <p>Hotel, casa rural, turismo</p>
+                        </div>
+                        <div class="client-option" onclick="selectClientType('comunidad')">
+                            <h4>🏢 Comunidad</h4>
+                            <p>Edificio residencial</p>
+                        </div>
+                        <div class="client-option" onclick="selectClientType('ayuntamiento')">
+                            <h4>🏛️ Ayuntamiento</h4>
+                            <p>Edificios municipales</p>
+                        </div>
+                        <div class="client-option" onclick="selectClientType('industria')">
+                            <h4>🏭 Industria</h4>
+                            <p>Nave, proceso productivo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>💰 Resultados Personalizados</h2>
+
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="value" id="ahorro-anual">-</div>
+                        <div class="label">AHORRO ANUAL</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="value" id="ahorro-porcentual">-</div>
+                        <div class="label">AHORRO %</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="value" id="toneladas-pellets">-</div>
+                        <div class="label">TONELADAS PELLETS</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="value" id="reduccion-co2">-</div>
+                        <div class="label">REDUCCIÓN CO2</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="value" id="roi-años">-</div>
+                        <div class="label">RECUPERACIÓN</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="value" id="ahorro-10-años">-</div>
+                        <div class="label">AHORRO 10 AÑOS</div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <h3>Comparativa de Combustibles 2024</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Combustible</th>
+                                <th>€/kWh</th>
+                                <th>vs Pellets</th>
+                                <th>Tu Ahorro Anual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight">
+                                <td><strong>Pellets Naturepellets</strong></td>
+                                <td><strong>0.063</strong></td>
+                                <td><strong>REFERENCIA</strong></td>
+                                <td id="coste-pellets-anual"><strong>-</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Gas Natural</td>
+                                <td>0.082</td>
+                                <td>+23% más caro</td>
+                                <td id="ahorro-vs-gas">-</td>
+                            </tr>
+                            <tr>
+                                <td>Gasóleo C</td>
+                                <td>0.127</td>
+                                <td>+51% más caro</td>
+                                <td id="ahorro-vs-gasoleo">-</td>
+                            </tr>
+                            <tr>
+                                <td>Electricidad</td>
+                                <td>0.200</td>
+                                <td>+68% más caro</td>
+                                <td id="ahorro-vs-electricidad">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>🎯 ¿Quieres un Estudio Técnico Personalizado?</h2>
+            <p>Obtén un análisis detallado de tu instalación con cálculos exactos y gestión de subvenciones incluida</p>
+            <button class="cta-button" onclick="solicitarEstudio()">📋 SOLICITAR ESTUDIO GRATUITO</button>
+            <button class="cta-button" onclick="contactarAhora()">📞 CONTACTAR AHORA</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedClientType = null;
+
+        // Precios combustibles 2024 (€/kWh)
+        const preciosCombustibles = {
+            'gasoleo': 0.127,
+            'gas': 0.082,
+            'propano': 0.223,
+            'electricidad': 0.200,
+            'pellets': 0.063
+        };
+
+        // Subvenciones por tipo de cliente
+        const subvenciones = {
+            'hotel': { porcentaje: 35, maximo: 50000 },
+            'comunidad': { porcentaje: 70, maximo: 80000 },
+            'ayuntamiento': { porcentaje: 60, maximo: 200000 },
+            'industria': { porcentaje: 40, maximo: 100000 }
+        };
+
+        function selectClientType(type) {
+            selectedClientType = type;
+
+            // Remover selección previa
+            document.querySelectorAll('.client-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Añadir selección actual
+            event.target.closest('.client-option').classList.add('selected');
+
+            calcularROI();
+        }
+
+        function calcularROI() {
+            const combustible = document.getElementById('combustible').value;
+            const costeAnual = parseFloat(document.getElementById('coste-anual').value);
+            const superficie = parseFloat(document.getElementById('superficie').value);
+
+            if (!combustible || !costeAnual || !superficie || !selectedClientType) {
+                return;
+            }
+
+            // Calcular kWh anuales actuales
+            const kwhAnuales = costeAnual / preciosCombustibles[combustible];
+
+            // Calcular coste con pellets
+            const costePelletsAnual = kwhAnuales * preciosCombustibles.pellets;
+
+            // Calcular ahorro
+            const ahorroAnual = costeAnual - costePelletsAnual;
+            const ahorroPorcentual = (ahorroAnual / costeAnual) * 100;
+
+            // Calcular toneladas pellets necesarias (4.8 kWh/kg, 1000kg/ton)
+            const toneladasPellets = kwhAnuales / 4800;
+
+            // Estimar inversión inicial (€/m² según tipo)
+            const factoresInversion = {
+                'hotel': 120,
+                'comunidad': 80,
+                'ayuntamiento': 100,
+                'industria': 90
+            };
+
+            const inversionEstimada = superficie * factoresInversion[selectedClientType];
+
+            // Calcular subvención aplicable
+            const subvencion = Math.min(
+                inversionEstimada * (subvenciones[selectedClientType].porcentaje / 100),
+                subvenciones[selectedClientType].maximo
+            );
+
+            const inversionNeta = inversionEstimada - subvencion;
+            const roiAños = inversionNeta / ahorroAnual;
+            const ahorro10Años = ahorroAnual * 10;
+
+            // Actualizar resultados
+            document.getElementById('ahorro-anual').textContent = formatCurrency(ahorroAnual);
+            document.getElementById('ahorro-porcentual').textContent = Math.round(ahorroPorcentual) + '%';
+            document.getElementById('toneladas-pellets').textContent = Math.round(toneladasPellets) + ' ton';
+            document.getElementById('reduccion-co2').textContent = Math.round(toneladasPellets * 3) + ' ton';
+            document.getElementById('roi-años').textContent = roiAños.toFixed(1) + ' años';
+            document.getElementById('ahorro-10-años').textContent = formatCurrency(ahorro10Años);
+
+            // Actualizar tabla comparativa
+            document.getElementById('coste-pellets-anual').textContent = formatCurrency(costePelletsAnual);
+            document.getElementById('ahorro-vs-gas').textContent = formatCurrency(kwhAnuales * (preciosCombustibles.gas - preciosCombustibles.pellets));
+            document.getElementById('ahorro-vs-gasoleo').textContent = formatCurrency(kwhAnuales * (preciosCombustibles.gasoleo - preciosCombustibles.pellets));
+            document.getElementById('ahorro-vs-electricidad').textContent = formatCurrency(kwhAnuales * (preciosCombustibles.electricidad - preciosCombustibles.pellets));
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-ES', {
+                style: 'currency',
+                currency: 'EUR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function solicitarEstudio() {
+            // Recopilar datos del formulario
+            const datos = {
+                combustible: document.getElementById('combustible').value,
+                costeAnual: document.getElementById('coste-anual').value,
+                superficie: document.getElementById('superficie').value,
+                tipoCliente: selectedClientType
+            };
+
+            // Simular envío de datos
+            alert('¡Perfecto! Te contactaremos en 24 horas para programar tu estudio técnico gratuito.\n\nDatos registrados:\n- Tipo: ' + selectedClientType + '\n- Superficie: ' + datos.superficie + 'm²\n- Coste actual: ' + datos.costeAnual + '€');
+        }
+
+        function contactarAhora() {
+            window.open('https://wa.me/34600000000?text=Hola,%20me%20interesa%20información%20sobre%20pellets%20Naturepellets', '_blank');
+        }
+    </script>
+</body>
+</html>
